@@ -142,7 +142,7 @@ namespace SolarSailNavigator
 				// Update starting mass for next time step
 				m0i -= dms;
 
-				// Update 
+				// Update
 
 				// Update orbit
 				orbit.Perturb(deltaVV, UT);
@@ -194,8 +194,9 @@ namespace SolarSailNavigator
 			line.useWorldSpace = false;
 			obj.layer = 10; // Map view
 			line.material = MapView.fetch.orbitLinesMaterial;
-			line.SetColors(color, color);
-			line.SetVertexCount(orbits.Count);
+			line.startColor = color;
+			line.endColor = color;
+			line.positionCount = orbits.Count;
 			// Calculate relative position vectors
 			relativePoints = new Vector3d[orbits.Count];
 			for(var i = 0; i < orbits.Count; i++)
@@ -221,7 +222,8 @@ namespace SolarSailNavigator
 					{
 						line.SetPosition(i, ScaledSpace.LocalToScaledSpace(rRefUT0 + relativePoints[i]));
 					}
-					line.SetWidth(0.01f * MapView.MapCamera.Distance, 0.01f * MapView.MapCamera.Distance);
+					line.startWidth = 0.01f * MapView.MapCamera.Distance;
+					line.endWidth = 0.01f * MapView.MapCamera.Distance;
 				}
 				else
 				{
@@ -319,8 +321,11 @@ namespace SolarSailNavigator
 				lineT.useWorldSpace = false;
 				objT.layer = 10; // Map
 				lineT.material = MapView.fetch.orbitLinesMaterial;
-				lineT.SetColors(Color.red, Color.red);
-				lineT.SetVertexCount(2);
+
+				lineT.startColor = Color.red;
+				lineT.endColor = Color.red;
+
+				lineT.positionCount = 2;
 
 				// Target errors
 				ApErr = orbitf.ApR - orbitT.ApR;
@@ -385,8 +390,9 @@ namespace SolarSailNavigator
 				linef.useWorldSpace = false;
 				objf.layer = 10; // Map
 				linef.material = MapView.fetch.orbitLinesMaterial;
-				linef.SetColors(navigator.controls.colorFinal, navigator.controls.colorFinal);
-				linef.SetVertexCount(361);
+				linef.startColor = navigator.controls.colorFinal;
+				linef.endColor = navigator.controls.colorFinal;
+				linef.positionCount = 361;
 				// 3D points to use in linef
 				linefPoints = new Vector3d[361];
 				// Final orbit of trajectory
@@ -433,7 +439,8 @@ namespace SolarSailNavigator
 						{
 							linef.SetPosition(i, ScaledSpace.LocalToScaledSpace(rRefUTf + linefPoints[i]));
 						}
-						linef.SetWidth(0.01f * MapView.MapCamera.Distance, 0.01f * MapView.MapCamera.Distance);
+						linef.startWidth = 0.01f * MapView.MapCamera.Distance;
+						linef.endWidth = 0.01f * MapView.MapCamera.Distance;
 
 						// Update target line
 						if(lineT != null)
@@ -443,7 +450,8 @@ namespace SolarSailNavigator
 								lineT.enabled = true;
 								lineT.SetPosition(0, ScaledSpace.LocalToScaledSpace(rRefUTf + rFinalRel));
 								lineT.SetPosition(1, ScaledSpace.LocalToScaledSpace(rRefUTf + rTargetFinalRel));
-								lineT.SetWidth(0.01f * MapView.MapCamera.Distance, 0.01f * MapView.MapCamera.Distance);
+								linef.startWidth = 0.01f * MapView.MapCamera.Distance;
+								linef.endWidth = 0.01f * MapView.MapCamera.Distance;
 							}
 							else
 							{
