@@ -5,7 +5,7 @@
     <ProjectGuid>{6642E564-988E-403B-A043-C9548624753E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>ClassLibrary</AssemblyName>
+    <AssemblyName>SolarSailNavigator</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -64,4 +64,10 @@
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "E:/KSP/RO DEV/GameData/SolarSailNavigator/Plugins"
+cd $(SolutionDir)
+xcopy /y /e /i "../Patches" "E:/KSP/RO DEV/GameData/SolarSailNavigator/Patches"
+xcopy /y /e /i "$(TargetPath)" "E:/KSP/RO DEV/GameData/SolarSailNavigator/Plugins</PostBuildEvent>
+  </PropertyGroup>
 </Project>
