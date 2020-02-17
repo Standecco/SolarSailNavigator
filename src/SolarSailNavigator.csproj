@@ -12,10 +12,10 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DEBUG_PROFILER;DEBUG_RESOURCES;KSP18</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -61,20 +61,13 @@
     <Compile Include="Preview.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include=".vs\SolarSailNavigator\v15\.suo" />
-    <None Include=".vs\SolarSailNavigator\v15\Server\sqlite3\db.lock" />
-    <None Include=".vs\SolarSailNavigator\v15\Server\sqlite3\storage.ide" />
-    <None Include=".vs\SolarSailNavigator\v15\Server\sqlite3\storage.ide-shm" />
-    <None Include=".vs\SolarSailNavigator\v15\Server\sqlite3\storage.ide-wal" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>mkdir "E:/KSP/RO DEV/GameData/SolarSailNavigator/Plugins"
-cd $(SolutionDir)
+cd $(ProjectDir)
 xcopy /y /e /i "../Patches" "E:/KSP/RO DEV/GameData/SolarSailNavigator/Patches"
 xcopy /y /e /i "$(TargetPath)" "E:/KSP/RO DEV/GameData/SolarSailNavigator/Plugins"</PostBuildEvent>
   </PropertyGroup>
