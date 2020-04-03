@@ -49,7 +49,7 @@ namespace SolarSailNavigator
         public static double[] warpLevels = { 1, 2, 3, 4, 5, 10, 50, 100, 1000, 10000, 100000 };
 
         /// Angle controls
-        public void GUIAngle (ref float angle, ref string angle_str, string name)
+        public void GUIAngle(ref float angle, ref string angle_str, string name)
         {
             // Text field
             GUILayout.BeginVertical();
@@ -58,24 +58,24 @@ namespace SolarSailNavigator
             GUILayout.BeginHorizontal();
             // Text field & buttons below
             string new_str = GUILayout.TextField(angle_str, GUILayout.Width(30));
-            if(new_str != angle_str)
+            if (new_str != angle_str)
             {
                 angle_str = new_str;
                 float parsedValue;
-                if(Single.TryParse(angle_str, out parsedValue))
+                if (Single.TryParse(angle_str, out parsedValue))
                 {
                     angle = Utils.normalizeAngle(parsedValue);
                     controls.Update();
                 }
             }
             // +/- buttons
-            if(GUILayout.Button("+"))
+            if (GUILayout.Button("+"))
             {
                 angle = Utils.normalizeAngle(angle + 5);
                 angle_str = angle.ToString();
                 controls.Update();
             }
-            if(GUILayout.Button("-"))
+            if (GUILayout.Button("-"))
             {
                 angle = Utils.normalizeAngle(angle - 5);
                 angle_str = angle.ToString();
@@ -87,7 +87,7 @@ namespace SolarSailNavigator
         }
 
         /// Throttle controls
-        public void GUIThrottle ()
+        public void GUIThrottle()
         {
             GUILayout.BeginVertical();
 
@@ -95,13 +95,13 @@ namespace SolarSailNavigator
             // Text field
             GUILayout.BeginHorizontal();
             string new_str = GUILayout.TextField(throttle_str, GUILayout.Width(30));
-            if(new_str != throttle_str)
+            if (new_str != throttle_str)
             {
                 throttle_str = new_str;
                 float parsedValue;
-                if(Single.TryParse(throttle_str, out parsedValue))
+                if (Single.TryParse(throttle_str, out parsedValue))
                 {
-                    if(parsedValue >= 0 && parsedValue <= 1)
+                    if (parsedValue >= 0 && parsedValue <= 1)
                     {
                         throttle = parsedValue;
                         controls.Update();
@@ -109,20 +109,20 @@ namespace SolarSailNavigator
                 }
             }
             // +/- buttons
-            if(GUILayout.Button("+"))
+            if (GUILayout.Button("+"))
             {
                 throttle = (float) Math.Round(throttle + 0.05f, 2);
-                if(throttle > 1f)
+                if (throttle > 1f)
                 {
                     throttle = 1f;
                 }
                 throttle_str = throttle.ToString();
                 controls.Update();
             }
-            if(GUILayout.Button("-"))
+            if (GUILayout.Button("-"))
             {
                 throttle = (float) Math.Round(throttle - 0.05f, 2);
-                if(throttle < 0f)
+                if (throttle < 0f)
                 {
                     throttle = 0f;
                 }
@@ -132,7 +132,7 @@ namespace SolarSailNavigator
             GUILayout.EndHorizontal();
 
             // Turn sail on/off for this segment
-            if(GUILayout.Toggle(sailon, "Use Sails") != sailon)
+            if (GUILayout.Toggle(sailon, "Use Sails") != sailon)
             {
                 sailon = !sailon;
                 sailon_str = sailon.ToString();
@@ -143,18 +143,18 @@ namespace SolarSailNavigator
         }
 
         /// Time controls
-        public void GUITime ()
+        public void GUITime()
         {
             // Days
             // Text field
             string new_days_str = GUILayout.TextField(days_str, GUILayout.Width(30));
-            if(new_days_str != days_str)
+            if (new_days_str != days_str)
             {
                 days_str = new_days_str;
                 int parsedDays;
-                if(Int32.TryParse(days_str, out parsedDays))
+                if (Int32.TryParse(days_str, out parsedDays))
                 {
-                    if(parsedDays >= 0)
+                    if (parsedDays >= 0)
                     {
                         days = (double) parsedDays;
                         duration = SecondsPerDay * days + SecondsPerHour * hours;
@@ -164,7 +164,7 @@ namespace SolarSailNavigator
             }
             // Increase
             GUILayout.BeginVertical();
-            if(GUILayout.Button("+"))
+            if (GUILayout.Button("+"))
             {
                 days++;
                 days_str = days.ToString();
@@ -172,7 +172,7 @@ namespace SolarSailNavigator
                 duration_str = duration.ToString();
                 controls.Update();
             }
-            if(GUILayout.Button("+10"))
+            if (GUILayout.Button("+10"))
             {
                 days += 10;
                 days_str = days.ToString();
@@ -183,9 +183,9 @@ namespace SolarSailNavigator
             GUILayout.EndVertical();
             // Decrease
             GUILayout.BeginVertical();
-            if(GUILayout.Button("-"))
+            if (GUILayout.Button("-"))
             {
-                if(days > 0)
+                if (days > 0)
                 {
                     days--;
                     days_str = days.ToString();
@@ -194,9 +194,9 @@ namespace SolarSailNavigator
                     controls.Update();
                 }
             }
-            if(GUILayout.Button("-10"))
+            if (GUILayout.Button("-10"))
             {
-                if(days >= 10)
+                if (days >= 10)
                 {
                     days -= 10;
                     days_str = days.ToString();
@@ -210,13 +210,13 @@ namespace SolarSailNavigator
             // Hours
             // Text field
             string new_hours_str = GUILayout.TextField(hours_str, GUILayout.Width(30));
-            if(new_hours_str != hours_str)
+            if (new_hours_str != hours_str)
             {
                 hours_str = new_hours_str;
                 int parsedHours;
-                if(Int32.TryParse(hours_str, out parsedHours))
+                if (Int32.TryParse(hours_str, out parsedHours))
                 {
-                    if(parsedHours >= 0 && parsedHours <= HoursPerDay)
+                    if (parsedHours >= 0 && parsedHours <= HoursPerDay)
                     {
                         hours = (double) parsedHours;
                         duration = SecondsPerDay * days + SecondsPerHour * hours;
@@ -225,10 +225,10 @@ namespace SolarSailNavigator
                 }
             }
             // Increase
-            if(GUILayout.Button("+"))
+            if (GUILayout.Button("+"))
             {
                 hours++;
-                if(hours > HoursPerDay)
+                if (hours > HoursPerDay)
                 {
                     hours = HoursPerDay;
                 }
@@ -238,9 +238,9 @@ namespace SolarSailNavigator
                 controls.Update();
             }
             // Decrease
-            if(GUILayout.Button("-"))
+            if (GUILayout.Button("-"))
             {
-                if(hours > 0)
+                if (hours > 0)
                 {
                     hours--;
                     hours_str = hours.ToString();
@@ -252,7 +252,7 @@ namespace SolarSailNavigator
         }
 
         /// Color controls
-        public void GUIColor (Color color)
+        public void GUIColor(Color color)
         {
             this.color = color;
             var cstyle = new GUIStyle();
@@ -263,9 +263,9 @@ namespace SolarSailNavigator
             GUILayout.Label(" ", cstyle, GUILayout.Width(30), GUILayout.Height(30));
         }
 
-        public void GUIFrame ()
+        public void GUIFrame()
         {
-            if(GUILayout.Button(frame.name, GUILayout.Width(40)))
+            if (GUILayout.Button(frame.name, GUILayout.Width(40)))
             {
                 frameWindow.show = true;
                 // Run Controls.Update when window returns
@@ -274,7 +274,7 @@ namespace SolarSailNavigator
         }
 
         /// GUI line
-        public void GUILine (Color color, int i)
+        public void GUILine(Color color, int i)
         {
             // Vertical space
             GUILayout.Space(5);
@@ -290,8 +290,8 @@ namespace SolarSailNavigator
             GUIFrame();
 
             // Add/Remove buttons
-            if(GUILayout.Button("INS")) { controls.Add(i); };
-            if(GUILayout.Button("DEL")) { controls.Remove(i); };
+            if (GUILayout.Button("INS")) { controls.Add(i); };
+            if (GUILayout.Button("DEL")) { controls.Remove(i); };
 
             GUILayout.EndHorizontal();
 
@@ -300,7 +300,7 @@ namespace SolarSailNavigator
         }
 
         /// Constructor
-        public Control (Navigator navigator, Controls controls, float[] angles, float throttle, bool sailon, double duration, int iwarp, string frame)
+        public Control(Navigator navigator, Controls controls, float[] angles, float throttle, bool sailon, double duration, int iwarp, string frame)
         {
             // Navigator
             this.navigator = navigator;
@@ -314,7 +314,7 @@ namespace SolarSailNavigator
             this.angles = angles;
             // Angle strings
             anglestr = new string[3];
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 anglestr[i] = angles[i].ToString();
             }
@@ -337,7 +337,7 @@ namespace SolarSailNavigator
             warp = warpLevels[iwarp];
         }
 
-        public static Control Default (Navigator navigator, Controls controls)
+        public static Control Default(Navigator navigator, Controls controls)
         {
             var frame = Frame.Frames[navigator.defaultFrame];
             var defaultAngles = new float[] { navigator.defaultAngle0, navigator.defaultAngle1, navigator.defaultAngle2 };
@@ -382,7 +382,7 @@ namespace SolarSailNavigator
 
         /// Constructor
         /// Give the navigator to which this control is for
-        public Controls (Navigator navigator)
+        public Controls(Navigator navigator)
         {
             // Defaults window
             defaultWindow = new DefaultWindow(navigator);
@@ -395,7 +395,7 @@ namespace SolarSailNavigator
             id = GUIUtility.GetControlID(FocusType.Keyboard);
 
             // Initial time
-            if(navigator.UT0 == 0)
+            if (navigator.UT0 == 0)
             {
                 UT0 = Planetarium.GetUniversalTime();
             }
@@ -409,7 +409,7 @@ namespace SolarSailNavigator
             navigatorOff = Control.Default(navigator, this);
 
             // If the navigator doesn't have saved controls, return default
-            if(String.IsNullOrEmpty(navigator.frames) ||
+            if (String.IsNullOrEmpty(navigator.frames) ||
             String.IsNullOrEmpty(navigator.angle0s) ||
             String.IsNullOrEmpty(navigator.angle1s) ||
             String.IsNullOrEmpty(navigator.angle2s) ||
@@ -448,7 +448,7 @@ namespace SolarSailNavigator
                 controls = new List<Control>();
 
                 // Populate controls
-                for(var i = 0; i < ncontrols; i++)
+                for (var i = 0; i < ncontrols; i++)
                 {
                     var angles = new float[] { Utils.ParseSingle(angle0Strings[i]),
                         Utils.ParseSingle(angle1Strings[i]),
@@ -469,13 +469,13 @@ namespace SolarSailNavigator
         }
 
         /// Convert length in meters to string with bigger units
-        string LengthToString (double lengthm)
+        string LengthToString(double lengthm)
         {
-            if(Math.Abs(lengthm) < 1000)
+            if (Math.Abs(lengthm) < 1000)
             {
                 return Math.Round(lengthm).ToString() + " m";
             }
-            else if(Math.Abs(lengthm) < 1000000000)
+            else if (Math.Abs(lengthm) < 1000000000)
             {
                 return Math.Round(lengthm / 1000, 3).ToString() + " km";
             }
@@ -486,9 +486,9 @@ namespace SolarSailNavigator
         }
 
         /// Convert speed in m/s to string with bigger units
-        string SpeedToString (double speedms)
+        string SpeedToString(double speedms)
         {
-            if(Math.Abs(speedms) < 1000)
+            if (Math.Abs(speedms) < 1000)
             {
                 return Math.Round(speedms, 1).ToString() + " m/s";
             }
@@ -500,7 +500,7 @@ namespace SolarSailNavigator
 
 
         /// GUI
-        public void ControlsGUI (int WindowID)
+        public void ControlsGUI(int WindowID)
         {
             GUILayout.BeginVertical();
 
@@ -508,13 +508,13 @@ namespace SolarSailNavigator
             navigator.IsLocked = GUILayout.Toggle(navigator.IsLocked, "Lock Attitude");
 
             // Check for any other locked navigators
-            if(navigator.IsLocked)
+            if (navigator.IsLocked)
             {
-                foreach(var p in navigator.vessel.parts)
+                foreach (var p in navigator.vessel.parts)
                 {
-                    foreach(var m in p.Modules)
+                    foreach (var m in p.Modules)
                     {
-                        if(!System.Object.ReferenceEquals(m, navigator) && m is Navigator && (m as Navigator).IsLocked)
+                        if (!System.Object.ReferenceEquals(m, navigator) && m is Navigator && (m as Navigator).IsLocked)
                         {
                             navigator.IsLocked = false;
                             Debug.Log("[SolarSailNavigator] " + (m as PartModule).part.partName + " is already locked. Cannot lock " + navigator.part.partName);
@@ -526,7 +526,7 @@ namespace SolarSailNavigator
             // Set the initial time of the sequence
             GUILayout.BeginHorizontal();
             GUILayout.Label("Start time: " + UT0.ToString());
-            if(GUILayout.Button("Set to Now"))
+            if (GUILayout.Button("Set to Now"))
             {
                 UT0 = Planetarium.GetUniversalTime();
                 Update();
@@ -552,7 +552,7 @@ namespace SolarSailNavigator
             int icolor = 0;
             durationTotal = 0.0;
             //foreach(var control in controls) {
-            for(var i = 0; i < ncontrols; i++)
+            for (var i = 0; i < ncontrols; i++)
             {
                 var control = controls[i];
 
@@ -564,14 +564,14 @@ namespace SolarSailNavigator
 
                 // Update color index
                 icolor++;
-                if(icolor == colorMap.Length)
+                if (icolor == colorMap.Length)
                 {
                     icolor = 0;
                 }
             }
 
             // Add a control to end
-            if(GUILayout.Button("Add")) { Add(controls.Count); };
+            if (GUILayout.Button("Add")) { Add(controls.Count); };
 
             // Final orbit color
             colorFinal = colorMap[icolor];
@@ -580,10 +580,10 @@ namespace SolarSailNavigator
             GUILayout.Label("Duration: " + durationTotal + " sec");
 
             // Preview orbit
-            if(GUILayout.Toggle(showPreview, previewButtonText) != showPreview)
+            if (GUILayout.Toggle(showPreview, previewButtonText) != showPreview)
             {
                 showPreview = !showPreview;
-                if(showPreview)
+                if (showPreview)
                 {
                     preview.Calculate();
                 }
@@ -594,18 +594,18 @@ namespace SolarSailNavigator
             }
 
             // If preview turned on
-            if(showPreview)
+            if (showPreview)
             {
                 // Show final orbit
                 GUILayout.BeginHorizontal();
-                if(GUILayout.Toggle(showFinal, "Show Final Orbit") != showFinal)
+                if (GUILayout.Toggle(showFinal, "Show Final Orbit") != showFinal)
                 {
                     showFinal = !showFinal;
                     preview.linef.enabled = showFinal;
 
                 }
                 // Final orbit color
-                if(showFinal)
+                if (showFinal)
                 {
                     //colorFinal = colorMap[icolor];
                     var cstyle = new GUIStyle();
@@ -620,11 +620,11 @@ namespace SolarSailNavigator
 
                 // Final elements
                 GUILayout.BeginHorizontal();
-                if(GUILayout.Toggle(showFinalElements, "Show Final Elements") != showFinalElements)
+                if (GUILayout.Toggle(showFinalElements, "Show Final Elements") != showFinalElements)
                 {
                     showFinalElements = !showFinalElements;
                 }
-                if(showFinalElements)
+                if (showFinalElements)
                 {
                     GUILayout.BeginVertical();
                     GUILayout.Label("ApA: " + LengthToString(preview.orbitf.ApA));
@@ -641,26 +641,26 @@ namespace SolarSailNavigator
 
             // Target error
             // Target line will need updating when target is deselected
-            if(FlightGlobals.fetch.VesselTarget == null)
+            if (FlightGlobals.fetch.VesselTarget == null)
             {
                 updateTargetLine = true;
             }
-            if(FlightGlobals.fetch.VesselTarget != null && showPreview && preview.orbitf != null)
+            if (FlightGlobals.fetch.VesselTarget != null && showPreview && preview.orbitf != null)
             {
                 // Calculate target line & errors if target selected & update needed
-                if(FlightGlobals.fetch.VesselTarget != null && updateTargetLine)
+                if (FlightGlobals.fetch.VesselTarget != null && updateTargetLine)
                 {
                     preview.CalculateTargetLine();
                     updateTargetLine = false;
                 }
                 // GUI to show target errors
                 GUILayout.BeginHorizontal();
-                if(GUILayout.Toggle(showTargetErr, "Show Target Error") != showTargetErr)
+                if (GUILayout.Toggle(showTargetErr, "Show Target Error") != showTargetErr)
                 {
                     showTargetErr = !showTargetErr;
                 }
                 // Show error between final orbit and target
-                if(showTargetErr)
+                if (showTargetErr)
                 {
                     GUILayout.BeginVertical();
                     // Distance
@@ -700,14 +700,14 @@ namespace SolarSailNavigator
         private Rect controlWindowPos = new Rect(0, 50, 0, 0);
 
         /// Controls GUI function
-        public void DrawControls ()
+        public void DrawControls()
         {
-            if(navigator.vessel == FlightGlobals.ActiveVessel)
+            if (navigator.vessel == FlightGlobals.ActiveVessel)
                 controlWindowPos = GUILayout.Window(id, controlWindowPos, ControlsGUI, "Controls");
         }
 
         /// Add a control
-        public void Add (int i)
+        public void Add(int i)
         {
             controls.Insert(i, Control.Default(navigator, this));
             ncontrols = controls.Count;
@@ -716,9 +716,9 @@ namespace SolarSailNavigator
         }
 
         /// Remove a control
-        public void Remove (int i)
+        public void Remove(int i)
         {
-            if(ncontrols > 1)
+            if (ncontrols > 1)
             { // Don't remove last control
                 controls.RemoveAt(i);
                 ncontrols = controls.Count;
@@ -728,14 +728,14 @@ namespace SolarSailNavigator
         }
 
         /// Return control at specified UT
-        public Control Lookup (double UT)
+        public Control Lookup(double UT)
         {
             double deltaUT = UT - UT0; // Time past UT0
             double durationSum = 0.0; // Running sum of durations
-            foreach(var control in controls)
+            foreach (var control in controls)
             {
                 // deltaUT between prior and next duration
-                if(deltaUT >= durationSum && deltaUT < (durationSum += control.duration))
+                if (deltaUT >= durationSum && deltaUT < (durationSum += control.duration))
                 {
                     return control;
                 }
@@ -745,7 +745,7 @@ namespace SolarSailNavigator
         }
 
         /// Update the navigator's control fields
-        public void Update ()
+        public void Update()
         {
             // Initial time
             navigator.UT0 = UT0;
@@ -757,7 +757,7 @@ namespace SolarSailNavigator
             navigator.throttles = controls[0].throttle.ToString();
             navigator.sailons = controls[0].sailon.ToString();
             navigator.durations = controls[0].duration.ToString();
-            for(var i = 1; i < ncontrols; i++)
+            for (var i = 1; i < ncontrols; i++)
             {
                 navigator.frames += delimiter + controls[i].frame.name;
                 navigator.angle0s += delimiter + controls[i].angles[0].ToString();

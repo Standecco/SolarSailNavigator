@@ -23,7 +23,7 @@ namespace SolarSailNavigator
         public double m1; // Final mass
 
         /// Constructor & calculate
-        public void Propagate (Navigator navigator, Orbit orbit0, double UT0, double UTf, double dT, Control control, double m0in)
+        public void Propagate(Navigator navigator, Orbit orbit0, double UT0, double UTf, double dT, Control control, double m0in)
         {
 
             // Control parameters
@@ -59,11 +59,11 @@ namespace SolarSailNavigator
             orbits.Add(orbit0.Clone());
 
             // Iterate for nsteps
-            for(int i = 0; i < nsteps; i++)
+            for (int i = 0; i < nsteps; i++)
             {
 
                 // Last step goes to UTf
-                if(i == nsteps - 1)
+                if (i == nsteps - 1)
                 {
                     dT = dTlast;
                     UT = UTf;
@@ -83,11 +83,11 @@ namespace SolarSailNavigator
                 double dms = 0.0;
 
                 // Iterate over engines
-                foreach(var pe in navigator.persistentEngines)
+                foreach (var pe in navigator.persistentEngines)
                 {
 
                     // Only count thrust of engines that are not shut down in preview
-                    if(pe.engine.getIgnitionState)
+                    if (pe.engine.getIgnitionState)
                     {
 
                         // Thrust unit vector
@@ -109,14 +109,14 @@ namespace SolarSailNavigator
                 }
 
                 // Iterate over sails
-                if(sailon)
+                if (sailon)
                 {
-                    foreach(var s in navigator.solarSails)
+                    foreach (var s in navigator.solarSails)
                     {
 
                         // Check if sail in sun
                         double sunlightFactor = 1.0;
-                        if(!SolarSailPart.inSun(orbit, UT))
+                        if (!SolarSailPart.inSun(orbit, UT))
                         {
                             sunlightFactor = 0.0;
                         }
@@ -150,11 +150,11 @@ namespace SolarSailNavigator
                 double TP = orbit.period;
 
                 // Decide whether to add orbit to list of orbits to draw
-                if(i == nsteps - 1)
+                if (i == nsteps - 1)
                 { // Always add last orbit
                     orbits.Add(orbit.Clone());
                 }
-                else if(dTchoose >= TP / 360)
+                else if (dTchoose >= TP / 360)
                 { // If 1/360th of current period passed, add orbit
                     orbits.Add(orbit.Clone());
                     // Reset dTchoose
@@ -166,7 +166,7 @@ namespace SolarSailNavigator
             m1 = m0i;
         }
 
-        public PreviewSegment (Navigator navigator, Orbit orbitInitial, double UT0, double UTf, Control control, Color color, double m0in)
+        public PreviewSegment(Navigator navigator, Orbit orbitInitial, double UT0, double UTf, Control control, Color color, double m0in)
         {
             this.UT0 = UT0;
             this.UTf = UTf;
@@ -180,7 +180,7 @@ namespace SolarSailNavigator
             // Initialize LineRenderer
 
             // Remove old line
-            if(line != null)
+            if (line != null)
             {
                 UnityEngine.Object.Destroy(line);
             }
@@ -195,7 +195,7 @@ namespace SolarSailNavigator
             line.positionCount = orbits.Count;
             // Calculate relative position vectors
             relativePoints = new Vector3d[orbits.Count];
-            for(var i = 0; i < orbits.Count; i++)
+            for (var i = 0; i < orbits.Count; i++)
             {
                 double UTi = orbits[i].epoch;
                 relativePoints[i] = orbits[i].getRelativePositionAtUT(UTi).xzy;
@@ -203,22 +203,22 @@ namespace SolarSailNavigator
         }
 
         /// Update segment during renders
-        public void Update (Vessel vessel)
+        public void OnPostRender(Vessel vessel)
         {
-            if(line != null)
+            if (line != null)
             {
                 // Enable only on map
-                if(MapView.MapIsEnabled)
+                if (MapView.MapIsEnabled)
                 {
                     line.enabled = true;
                     // Update points
                     Vector3d rRefUT0 = vessel.orbit.referenceBody.getPositionAtUT(UT0);
-                    for(int i = 0; i < orbits.Count; i++)
+                    for (int i = 0; i < orbits.Count; i++)
                     {
                         line.SetPosition(i, ScaledSpace.LocalToScaledSpace(rRefUT0 + relativePoints[i]));
                     }
-                    line.startWidth = 0.01f * MapView.MapCamera.Distance;
-                    line.endWidth = 0.01f * MapView.MapCamera.Distance;
+                    line.startWidth = 0.005f * MapView.MapCamera.Distance;
+                    line.endWidth = 0.005f * MapView.MapCamera.Distance;
                 }
                 else
                 {
@@ -255,43 +255,43 @@ namespace SolarSailNavigator
         public double AOPErr; // Error in argument of periapsis
 
         /// Constructor
-        public Preview (Navigator navigator)
+        public Preview(Navigator navigator)
         {
             this.navigator = navigator;
         }
 
         /// Calculate & draw trajectory prediction
-        public void Destroy ()
+        public void Destroy()
         {
             // Destroy trajectory lines
-            if(segments != null)
+            if (segments != null)
             {
-                foreach(var segment in segments)
+                foreach (var segment in segments)
                 {
-                    if(segment.line != null)
+                    if (segment.line != null)
                     {
                         UnityEngine.Object.Destroy(segment.line);
                     }
                 }
             }
             // Destroy final line
-            if(linef != null)
+            if (linef != null)
             {
                 UnityEngine.Object.Destroy(linef);
             }
             // Destroy target line
-            if(lineT != null)
+            if (lineT != null)
             {
                 UnityEngine.Object.Destroy(lineT);
             }
         }
 
-        public void CalculateTargetLine ()
+        public void CalculateTargetLine()
         {
             // Selected target
             var target = FlightGlobals.fetch.VesselTarget;
             // If a target is selected...
-            if(target != null)
+            if (target != null)
             {
                 orbitT = target.GetOrbit(); // Target orbit
                                             // Spacecraft relative position at UTf
@@ -303,7 +303,7 @@ namespace SolarSailNavigator
                 // Relative speed to target at UTf
                 targetV = Vector3d.Distance(orbitf.getOrbitalVelocityAtUT(UTf), orbitT.getOrbitalVelocityAtUT(UTf));
                 // Destroy current line if present
-                if(lineT != null)
+                if (lineT != null)
                 {
                     UnityEngine.Object.Destroy(lineT);
                 }
@@ -317,7 +317,7 @@ namespace SolarSailNavigator
                 lineT.startColor = Color.red;
                 lineT.endColor = Color.red;
 
-                lineT.positionCount = 2;
+                lineT.positionCount = 361;
 
                 // Target errors
                 ApErr = orbitf.ApR - orbitT.ApR;
@@ -330,16 +330,16 @@ namespace SolarSailNavigator
             }
         }
 
-        public void Calculate ()
+        public void Calculate()
         {
-            if(navigator.controls.showPreview)
+            if (navigator.controls.showPreview)
             {
                 // Destroy existing lines
-                if(segments != null)
+                if (segments != null)
                 {
-                    foreach(var segment in segments)
+                    foreach (var segment in segments)
                     {
-                        if(segment.line != null)
+                        if (segment.line != null)
                         {
                             UnityEngine.Object.Destroy(segment.line);
                         }
@@ -353,7 +353,7 @@ namespace SolarSailNavigator
                 // Initial mass per segment
                 double m0i = navigator.vessel.GetTotalMass();
                 // Calculate each segment
-                for(var i = 0; i < segments.Length; i++)
+                for (var i = 0; i < segments.Length; i++)
                 {
                     // End time
                     double UTf = UT0 + navigator.controls.controls[i].duration;
@@ -372,7 +372,7 @@ namespace SolarSailNavigator
 
                 // Draw one complete final orbit
                 // Destroy existing line
-                if(linef != null)
+                if (linef != null)
                 {
                     UnityEngine.Object.Destroy(linef);
                 }
@@ -392,7 +392,7 @@ namespace SolarSailNavigator
                 // Period of final orbit
                 double TPf = orbitf.period;
                 // Populate points
-                for(var i = 0; i <= 360; i++)
+                for (var i = 0; i <= 360; i++)
                 {
                     double UTi = this.UTf + i * TPf / 360;
                     // Relative orbitf position
@@ -407,43 +407,44 @@ namespace SolarSailNavigator
         }
 
         /// Update
-        public void Update (Vessel vessel)
+        public void OnPostRender(Vessel vessel)
         {
-            if(navigator.controls.showPreview)
+            if (navigator.controls.showPreview)
             {
-                if(segments != null)
+                if (segments != null)
                 {
-                    foreach(var segment in segments)
+                    foreach (var segment in segments)
                     {
-                        segment.Update(vessel);
+                        segment.OnPostRender(vessel);
                     }
                 }
 
                 // Update final orbit line from points
-                if(linef != null)
+                if (linef != null)
                 {
-                    if(MapView.MapIsEnabled)
+                    if (MapView.MapIsEnabled)
                     {
                         linef.enabled = navigator.controls.showFinal;
                         // Position of reference body at end of trajectory
                         Vector3d rRefUTf = vessel.orbit.referenceBody.getPositionAtUT(UTf);
-                        for(var i = 0; i <= 360; i++)
+                        for (var i = 0; i <= 360; i++)
                         {
                             linef.SetPosition(i, ScaledSpace.LocalToScaledSpace(rRefUTf + linefPoints[i]));
                         }
-                        linef.startWidth = 0.01f * MapView.MapCamera.Distance;
-                        linef.endWidth = 0.01f * MapView.MapCamera.Distance;
+                        linef.startWidth = 0.005f * MapView.MapCamera.Distance;
+                        linef.endWidth = 0.005f * MapView.MapCamera.Distance;
 
                         // Update target line
-                        if(lineT != null)
+                        if (lineT != null)
                         { // If target line exists
-                            if(FlightGlobals.fetch.VesselTarget != null)
+                            if (FlightGlobals.fetch.VesselTarget != null)
                             {
+
                                 lineT.enabled = true;
                                 lineT.SetPosition(0, ScaledSpace.LocalToScaledSpace(rRefUTf + rFinalRel));
                                 lineT.SetPosition(1, ScaledSpace.LocalToScaledSpace(rRefUTf + rTargetFinalRel));
-                                linef.startWidth = 0.01f * MapView.MapCamera.Distance;
-                                linef.endWidth = 0.01f * MapView.MapCamera.Distance;
+                                linef.startWidth = 0.005f * MapView.MapCamera.Distance;
+                                linef.endWidth = 0.005f * MapView.MapCamera.Distance;
                             }
                             else
                             {

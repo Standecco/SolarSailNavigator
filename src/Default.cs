@@ -14,7 +14,7 @@ namespace SolarSailNavigator
         Navigator navigator;
         Dictionary<string, string> fields;
 
-        public DefaultWindow (Navigator navigator)
+        public DefaultWindow(Navigator navigator)
         {
             this.navigator = navigator;
             windowPos = new Rect(705, 100, 0, 0);
@@ -30,18 +30,18 @@ namespace SolarSailNavigator
             fields["Sail on"] = navigator.defaultSailon.ToString();
         }
 
-        public void DrawWindow ()
+        public void DrawWindow()
         {
-            if(show)
+            if (show)
             {
                 windowPos = GUILayout.Window(frameID, windowPos, WindowGUI, "Defaults");
             }
         }
 
-        void WindowGUI (int WindowID)
+        void WindowGUI(int WindowID)
         {
             GUILayout.BeginVertical();
-            foreach(var key in fields.Keys)
+            foreach (var key in fields.Keys)
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(key, GUILayout.Width(80));
@@ -49,64 +49,64 @@ namespace SolarSailNavigator
                 float parsedSingle;
                 int parsedInt;
                 bool parsedBool;
-                if(newstr != fields[key])
+                if (newstr != fields[key])
                 {
                     fields[key] = newstr;
-                    switch(key)
+                    switch (key)
                     {
                         case "Frame":
-                            if(Frame.Frames.ContainsKey(newstr))
+                            if (Frame.Frames.ContainsKey(newstr))
                             {
                                 navigator.defaultFrame = newstr;
                             }
                             break;
                         case "Angle(0)":
-                            if(Single.TryParse(fields[key], out parsedSingle))
+                            if (Single.TryParse(fields[key], out parsedSingle))
                             {
                                 navigator.defaultAngle0 = Utils.normalizeAngle(parsedSingle);
                             }
                             break;
                         case "Angle(1)":
-                            if(Single.TryParse(fields[key], out parsedSingle))
+                            if (Single.TryParse(fields[key], out parsedSingle))
                             {
                                 navigator.defaultAngle1 = Utils.normalizeAngle(parsedSingle);
                             }
                             break;
                         case "Angle(2)":
-                            if(Single.TryParse(fields[key], out parsedSingle))
+                            if (Single.TryParse(fields[key], out parsedSingle))
                             {
                                 navigator.defaultAngle2 = Utils.normalizeAngle(parsedSingle);
                             }
                             break;
                         case "Days":
-                            if(Int32.TryParse(fields[key], out parsedInt))
+                            if (Int32.TryParse(fields[key], out parsedInt))
                             {
-                                if(parsedInt >= 0)
+                                if (parsedInt >= 0)
                                 {
                                     navigator.defaultDays = (double) parsedInt;
                                 }
                             }
                             break;
                         case "Hours":
-                            if(Int32.TryParse(fields[key], out parsedInt))
+                            if (Int32.TryParse(fields[key], out parsedInt))
                             {
-                                if(parsedInt >= 0 && parsedInt <= 6)
+                                if (parsedInt >= 0 && parsedInt <= 6)
                                 {
                                     navigator.defaultHours = (double) parsedInt;
                                 }
                             }
                             break;
                         case "Throttle":
-                            if(Single.TryParse(fields[key], out parsedSingle))
+                            if (Single.TryParse(fields[key], out parsedSingle))
                             {
-                                if(parsedSingle >= 0 && parsedSingle <= 1)
+                                if (parsedSingle >= 0 && parsedSingle <= 1)
                                 {
                                     navigator.defaultThrottle = parsedSingle;
                                 }
                             }
                             break;
                         case "Sail on":
-                            if(Boolean.TryParse(fields[key], out parsedBool))
+                            if (Boolean.TryParse(fields[key], out parsedBool))
                             {
                                 navigator.defaultSailon = parsedBool;
                             }

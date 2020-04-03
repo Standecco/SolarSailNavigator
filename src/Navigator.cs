@@ -65,27 +65,27 @@ namespace SolarSailNavigator
 
         /// Show controls
         [KSPEvent(guiActive = true, guiName = "Show Navigator Controls", active = true)]
-        public void ShowControls ()
+        public void ShowControls()
         {
             IsControlled = true;
         }
 
         /// Hide controls
         [KSPEvent(guiActive = true, guiName = "Hide Navigator Controls", active = false)]
-        public void HideControls ()
+        public void HideControls()
         {
             // Remove control window
             IsControlled = false;
         }
 
         /// When to draw Controls GUI
-        private void OnGUI ()
+        private void OnGUI()
         {
-            if(IsControlled & anyPersistent)
+            if (IsControlled & anyPersistent)
             {
                 controls.DrawControls();
                 controls.defaultWindow.DrawWindow();
-                foreach(var control in controls.controls)
+                foreach (var control in controls.controls)
                 {
                     control.frameWindow.DrawFrameWindow();
                 }
@@ -93,7 +93,7 @@ namespace SolarSailNavigator
         }
 
         /// Initialization
-        public override void OnStart (StartState state)
+        public override void OnStart(StartState state)
         {
 
             // Check: are we starting?
@@ -102,22 +102,22 @@ namespace SolarSailNavigator
             // Base initialization
             base.OnStart(state);
 
-            if(state != StartState.None && state != StartState.Editor)
+            if (state != StartState.None && state != StartState.Editor)
             {
 
                 // Find sails and persistent engines
-                foreach(Part p in vessel.parts)
+                foreach (Part p in vessel.parts)
                 {
-                    foreach(PartModule pm in p.Modules)
+                    foreach (PartModule pm in p.Modules)
                     {
-                        if(pm is SolarSailPart)
+                        if (pm is SolarSailPart)
                         {
                             solarSails.Add((SolarSailPart) pm);
                         }
-                        else if(pm is PersistentEngine)
+                        else if (pm is PersistentEngine)
                         {
                             var pm2 = (PersistentEngine) pm;
-                            if(pm2.IsPersistentEngine)
+                            if (pm2.IsPersistentEngine)
                             {
                                 persistentEngines.Add((PersistentEngine) pm);
                             }
@@ -125,7 +125,7 @@ namespace SolarSailNavigator
                     }
                 }
 
-                if(solarSails.Count > 0 || persistentEngines.Count > 0)
+                if (solarSails.Count > 0 || persistentEngines.Count > 0)
                 {
                     // Persistent propulsion found
                     anyPersistent = true;
@@ -143,14 +143,14 @@ namespace SolarSailNavigator
         }
 
         /// Updated
-        public override void OnUpdate ()
+        public override void OnUpdate()
         {
 
             // Base update
             base.OnUpdate();
 
             // Sail deployment GUI
-            if(anyPersistent)
+            if (anyPersistent)
             {
                 Events["ShowControls"].active = !IsControlled;
                 Events["HideControls"].active = IsControlled;
@@ -158,32 +158,32 @@ namespace SolarSailNavigator
         }
 
         /// Physics update
-        public void FixedUpdate ()
+        public void FixedUpdate()
         {
-            if(anyPersistent)
+            if (anyPersistent)
             {
 
                 // Universal time
                 double UT = Planetarium.GetUniversalTime();
 
                 // Force attitude to specified frame & hold throttle
-                if(FlightGlobals.fetch != null && IsLocked)
+                if (FlightGlobals.fetch != null && IsLocked)
                 {
                     // Set attitude
                     Control control = controls.Lookup(UT);
                     vessel.SetRotation(control.frame.qfn(vessel.orbit, UT, control.angles));
                     // Set throttle
-                    if(isEnabled)
+                    if (isEnabled)
                     {
                         // Realtime mode
-                        if(!vessel.packed)
+                        if (!vessel.packed)
                         {
                             vessel.ctrlState.mainThrottle = control.throttle;
                         }
                         // Warp mode
                         else
                         {
-                            foreach(var pe in persistentEngines)
+                            foreach (var pe in persistentEngines)
                             {
                                 pe.ThrottlePersistent = control.throttle;
                                 pe.ThrustPersistent = control.throttle * pe.engine.maxThrust;
@@ -192,12 +192,12 @@ namespace SolarSailNavigator
                         }
                     }
                     // Are sails in use?
-                    foreach(var s in solarSails)
+                    foreach (var s in solarSails)
                     {
                         // Control's "sailon" changes relative to sail's "IsEnabled"
-                        if(control.sailon != s.IsEnabled)
+                        if (control.sailon != s.IsEnabled)
                         {
-                            if(control.sailon)
+                            if (control.sailon)
                             { // Sail on
                                 s.DeploySail();
                             }
@@ -211,9 +211,9 @@ namespace SolarSailNavigator
             }
 
             // Update preview trajectory if it exists
-            if(anyPersistent)
+            if (anyPersistent)
             {
-                controls.preview.Update(vessel);
+                controls.preview.OnPostRender(vessel);
             }
         }
     }

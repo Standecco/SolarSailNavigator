@@ -36,21 +36,26 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\KSP\RO DEV\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\KSP\RO DEV\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PersistentThrust">
       <HintPath>..\..\PersistentThrust\src\bin\Debug\PersistentThrust.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\KSP\RO DEV\KSP_x64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\KSP\RO DEV\KSP_x64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +71,9 @@
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>mkdir "E:/KSP/RO DEV/GameData/SolarSailNavigator/Plugins"
+    <PostBuildEvent>mkdir "E:\KSP\RO DEV\GameData\SolarSailNavigator\Plugins"
 cd $(ProjectDir)
-xcopy /y /e /i "../Patches" "E:/KSP/RO DEV/GameData/SolarSailNavigator/Patches"
-xcopy /y /e /i "$(TargetPath)" "E:/KSP/RO DEV/GameData/SolarSailNavigator/Plugins"</PostBuildEvent>
+xcopy /y /e /i "..\Patches" "E:\KSP\RO DEV\GameData\SolarSailNavigator\Patches"
+xcopy /y /e /i "$(ProjectDir)\bin\Debug" "E:\KSP\RO DEV\GameData\SolarSailNavigator\Plugins"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -10,11 +10,11 @@ namespace SolarSailNavigator
     {
         // Delagates
         // Base frame quaternion given orbit and UT
-        public delegate Quaternion Qbase (Orbit orbit, double UT);
+        public delegate Quaternion Qbase(Orbit orbit, double UT);
         // Local frame given angles
-        public delegate Quaternion Qlocal (float[] angles);
+        public delegate Quaternion Qlocal(float[] angles);
         // Quaternion of vessel given orbit, UT, and angles
-        public delegate Quaternion Q (Orbit orbit, double UT, float[] angles);
+        public delegate Quaternion Q(Orbit orbit, double UT, float[] angles);
 
         // Fields
         public string name;
@@ -26,7 +26,7 @@ namespace SolarSailNavigator
         public Q qfn;
 
         /// Constructor
-        public Frame (string name, string[] names, string summary, float[] defaults, Qbase qbasefn, Qlocal qlocalfn, Q qfn)
+        public Frame(string name, string[] names, string summary, float[] defaults, Qbase qbasefn, Qlocal qlocalfn, Q qfn)
         {
             this.name = name;
             this.names = names;
@@ -38,7 +38,7 @@ namespace SolarSailNavigator
         }
 
         /// ToString() override
-        public override string ToString ()
+        public override string ToString()
         {
             return name;
         }
@@ -69,7 +69,7 @@ namespace SolarSailNavigator
         /// Quaternion functions used by reference frames
         /// RTN Frame
         /// Calculate RTN frame quaternion given an orbit and UT
-        public static Quaternion RTNFrame (Orbit orbit, double UT)
+        public static Quaternion RTNFrame(Orbit orbit, double UT)
         {
             // Position
             var r = orbit.getRelativePositionAtUT(UT).normalized.xzy;
@@ -83,7 +83,7 @@ namespace SolarSailNavigator
             return Quaternion.LookRotation(t, r);
         }
 
-        public static Quaternion SailFrameLocal (float[] angles)
+        public static Quaternion SailFrameLocal(float[] angles)
         {
             // Angles
             var cone = angles[0];
@@ -114,7 +114,7 @@ namespace SolarSailNavigator
         }
 
         /// Sail frame given an orbit, angles, and UT
-        public static Quaternion SailFrame (Orbit orbit, double UT, float[] angles)
+        public static Quaternion SailFrame(Orbit orbit, double UT, float[] angles)
         {
             var QRTN = RTNFrame(orbit, UT);
             var QSL = SailFrameLocal(angles);
@@ -123,7 +123,7 @@ namespace SolarSailNavigator
 
         /// In-track/Cross-track/normal frame
         /// Calculate ICN frame from orbit and universal time
-        public static Quaternion ICNFrame (Orbit orbit, double UT)
+        public static Quaternion ICNFrame(Orbit orbit, double UT)
         {
             // Unit position
             var r = orbit.getRelativePositionAtUT(UT).normalized.xzy;
@@ -138,7 +138,7 @@ namespace SolarSailNavigator
         }
 
         /// Local frame given angles
-        public static Quaternion FAFLocal (float[] angles)
+        public static Quaternion FAFLocal(float[] angles)
         {
             // Angles
             var FPA = angles[0];
@@ -170,7 +170,7 @@ namespace SolarSailNavigator
         }
 
         /// Total quaternion
-        public static Quaternion FAFFrame (Orbit orbit, double UT, float[] angles)
+        public static Quaternion FAFFrame(Orbit orbit, double UT, float[] angles)
         {
             return ICNFrame(orbit, UT) * FAFLocal(angles);
         }
@@ -184,12 +184,12 @@ namespace SolarSailNavigator
         public bool show = false;
         Control control;
 
-        public FrameWindow (Control control)
+        public FrameWindow(Control control)
         {
             // Rectangle object
             frameWindowPos = new Rect(705, 50, 0, 0);
             // Frame window ID: create new if none, otherwise increment from last
-            if(control.controls.controls == null || control.controls.controls.Count == 0)
+            if (control.controls.controls == null || control.controls.controls.Count == 0)
             {
                 frameID = GUIUtility.GetControlID(FocusType.Keyboard);
             }
@@ -201,21 +201,21 @@ namespace SolarSailNavigator
             this.control = control;
         }
 
-        public void DrawFrameWindow ()
+        public void DrawFrameWindow()
         {
-            if(show)
+            if (show)
             {
                 frameWindowPos = GUILayout.Window(frameID, frameWindowPos, FrameWindowGUI, "Frame selection");
             }
         }
 
-        void FrameWindowGUI (int WindowID)
+        void FrameWindowGUI(int WindowID)
         {
             GUILayout.BeginVertical();
-            foreach(var f in Frame.Frames.Values)
+            foreach (var f in Frame.Frames.Values)
             {
                 GUILayout.BeginHorizontal();
-                if(GUILayout.Button(f.name))
+                if (GUILayout.Button(f.name))
                 {
                     control.frame = f;
                     show = false;
